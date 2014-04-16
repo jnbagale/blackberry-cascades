@@ -28,22 +28,23 @@ public:
     ApplicationUI(bb::cascades::Application *app);
     virtual ~ApplicationUI() { }
 
-    Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY statusChanged);
-    Q_INVOKABLE   void callme();
-
+    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged);
+    Q_INVOKABLE   void HelloCPP(QString message);
+    Q_INVOKABLE   void resetValue();
+    void HelloQML();
 
     public  Q_SLOTS:
-    QString status();
-    void setStatus(QString str);
+    int value();
+    void setValue(int value);
 
     Q_SIGNALS:
     // The change notification signal for the property
-    void statusChanged();
+    void valueChanged(int);
 
 private slots:
     void onSystemLanguageChanged();
 private:
-    QString m_status;
+    int m_value;
     QTranslator* m_pTranslator;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
     bb::cascades::AbstractPane* root;

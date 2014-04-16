@@ -4,7 +4,7 @@
 <context>
     <name>main</name>
     <message>
-        <source>Hello World</source>
+        <source>Hello CPP... Yours QML</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -22,15 +22,24 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     }
     // initial load
     onSystemLanguageChanged();
+    // Initialise value
+    m_value = 0;
 
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
 
-    qml->setContextProperty("app", this);
+    qml->setContextProperty("cppObject", this);
 
     // Create root object for the UI
     root = qml->createRootObject<AbstractPane>();
+
+    //set a value of a label in QML from CPP
+    root->setProperty("label0Text", "Hello World... From CPP");
+
+    // Updates another label on QML
+    HelloQML();
+
 
     // Set created root object as the application scene
     app->setScene(root);
@@ -47,21 +56,37 @@ void ApplicationUI::onSystemLanguageChanged()
     }
 }
 
-void ApplicationUI::callme()
+void ApplicationUI::HelloQML()
 {
-	this->setStatus(QString("Thanks for clicking me!"));
+	qDebug() << "Accessing QML Label... from CPP" << endl;
+	QObject *newLabel = this->root->findChild<QObject*>("label1");
+
+	if (newLabel)
+	    newLabel->setProperty("text", "Hello QML... Yours CPP");
 }
 
-QString ApplicationUI::status()
+void ApplicationUI::HelloCPP(QString message)
 {
-    return m_status;
+	qDebug() << message;
+}
+
+int ApplicationUI::value()
+{
+    return m_value;
 }
 
 //! [6]
-void ApplicationUI::setStatus(const QString status)
+void ApplicationUI::setValue(int value)
 {
 
-    m_status = status;
-    emit statusChanged();
+    m_value = value;
+    emit valueChanged(m_value);
+
+}
+void ApplicationUI::resetValue()
+{
+
+    m_value = 0;
+    emit valueChanged(m_value);
 
 }
